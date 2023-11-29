@@ -125,6 +125,10 @@ class Table:
 
 
 table = Table('movies', data_file('movies.csv'))
+lst = []
+lst.append(table)
+count = 0
+if 'Comedy' in table:
 
 
 
