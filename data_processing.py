@@ -2,6 +2,19 @@ import csv, os
 
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
+#
+# import csv, os
+#
+# __location__ = os.path.realpath(
+#     os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+def data_file(f):
+    movies = []
+    with open(os.path.join(__location__, 'movies.csv')) as f:
+        rows = csv.DictReader(f)
+        for r in rows:
+            movies.append(dict(r))
+    return movies
 
 class DB:
     def __init__(self):
@@ -97,6 +110,32 @@ class Table:
             pivot_table.append([item, aggregate_val_list])
         return pivot_table
 
+    def insert_row(self, dict):
+        self.table.append(dict)
+
+    def update_row(self, primary_attribute, primary_attribute_value, update_attribute, update_value):
+        filtered_table = Table(self.table_name + '_filtered', [])
+        for item1 in self.table:
+            if item1[primary_attribute] == update_attribute:
+                item1[primary_attribute_value] = update_value
+        return filtered_table
+
     def __str__(self):
         return self.table_name + ':' + str(self.table)
 
+
+table = Table('movies', data_file('movies.csv'))
+
+
+
+# table1 = Table('cities', cities)
+# table2 = Table('countries', countries)
+# my_DB = DB()
+# my_DB.insert(table1)
+# my_DB.insert(table2)
+# my_table1 = my_DB.search('cities')
+# my_table1_filtered = my_table1.filter(lambda x: x['country'] == 'Italy')
+# my_table1_selected = my_table1.select(['city', 'latitude'])
+# print(my_table1)
+# print()
+# print(my_table1_selected)
